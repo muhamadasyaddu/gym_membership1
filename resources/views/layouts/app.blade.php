@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Gym Membership') - GymPro</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/foto logo.png') }}">
+    <title>@yield('title', 'Gym Membership') - GYM Membership</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -322,18 +323,73 @@
             color: #92400e;
         }
         
-        /* Responsive */
-        @media (max-width: 991px) {
-            .sidebar {
-                transform: translateX(-100%);
+        /* ===== BRAND SIDEBAR ===== */
+            .sidebar-brand {
+                padding: 1.2rem 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                background: rgba(255,255,255,0.02);
             }
-            
-            .sidebar.show {
-                transform: translateX(0);
+
+            .brand-logo {
+                display: flex;
+                align-items: center;
+                gap: 12px;
             }
-            
-            .main-content {
-                margin-left: 0;
+
+            .brand-logo img {
+                width: 48px;
+                height: 48px;
+                object-fit: contain;
+                border-radius: 12px;
+                background: transparent;
+                flex-shrink: 0;
+                
+                /* efek elegant */
+                filter: drop-shadow(0 4px 10px rgba(255, 0, 80, 0.15));
+                
+                transition: all 0.3s ease;
+            }
+
+            .brand-logo img:hover {
+                transform: scale(1.05);
+            }
+
+            .brand-text {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .brand-title {
+                color: #ffffff;
+                font-size: 1.05rem;
+                font-weight: 700;
+                line-height: 1.2;
+                margin: 0;
+                white-space: nowrap;
+            }
+
+            .brand-subtitle {
+                color: #94a3b8;
+                font-size: 0.68rem;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-top: 2px;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 991px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                }
+
+                .main-content {
+                    margin-left: 0;
+                }
             }
         }
     </style>
@@ -342,9 +398,21 @@
 <body>
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <h4><i class="bi bi-lightning-charge-fill"></i> Gym<span>Pro</span></h4>
+       <div class="sidebar-brand">
+    <div class="brand-logo">
+        <img 
+            src="{{ asset('images/foto logo.png') }}" 
+            alt="Gym Membership Logo"
+        >
+
+        <div class="brand-text">
+            <div class="brand-title">
+                GYM Membership
+            </div>
+
         </div>
+    </div>
+</div>
         
         <div class="sidebar-menu">
             <div class="sidebar-label">Menu Utama</div>
