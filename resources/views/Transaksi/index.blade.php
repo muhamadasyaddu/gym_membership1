@@ -118,7 +118,7 @@
     </div>
     
     @if($transaksi->hasPages())
-    <div class="card-footer bg-white">
+    <div class="card-footer pagination-compact">
         {{ $transaksi->links() }}
     </div>
     @endif

@@ -68,7 +68,15 @@ class Anggota extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return $this->status === 'aktif' ? 'Aktif' : 'Nonaktif';
+        return $this->status === 'aktif' ? 'Aktif' : 'Tidak Aktif';
+    }
+
+    /**
+     * Get status badge class
+     */
+    public function getStatusBadgeAttribute(): string
+    {
+        return $this->status === 'aktif' ? 'success' : 'danger';
     }
 
      /**

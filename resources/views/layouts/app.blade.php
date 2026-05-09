@@ -282,6 +282,37 @@
         .badge {
             font-weight: 500;
             padding: 0.4em 0.75em;
+            border-radius: 0.375rem;
+        }
+        
+        .badge.bg-success {
+            background: rgba(34, 197, 94, 0.1) !important;
+            color: #16a34a !important;
+        }
+        
+        .badge.bg-danger {
+            background: rgba(239, 68, 68, 0.1) !important;
+            color: #dc2626 !important;
+        }
+        
+        .badge.bg-warning {
+            background: rgba(245, 158, 11, 0.1) !important;
+            color: #d97706 !important;
+        }
+        
+        .badge.bg-info {
+            background: rgba(14, 165, 233, 0.1) !important;
+            color: #0284c7 !important;
+        }
+        
+        .badge.bg-primary {
+            background: rgba(79, 70, 229, 0.1) !important;
+            color: #4f46e5 !important;
+        }
+        
+        .badge.bg-pink {
+            background: rgba(236, 72, 153, 0.1) !important;
+            color: #db2777 !important;
         }
         
         /* Forms */
@@ -300,6 +331,36 @@
         .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        /* Pagination Styling */
+        .pagination {
+            margin-bottom: 0;
+            gap: 5px;
+        }
+        
+        .page-link {
+            border-radius: 0.5rem !important;
+            padding: 0.4rem 0.8rem;
+            color: #475569;
+            border-color: #e2e8f0;
+            font-size: 0.875rem;
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .card-footer.pagination-compact {
+            padding: 0.75rem 1.25rem;
+            background-color: #fff;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .pagination-info {
+            font-size: 0.875rem;
+            color: #64748b;
         }
         
         /* Flash Messages */
@@ -391,7 +452,7 @@
                     margin-left: 0;
                 }
             }
-        }
+
     </style>
     @stack('styles')
 </head>

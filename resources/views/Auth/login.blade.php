@@ -41,7 +41,7 @@
             padding: 70px;
             background:
                 linear-gradient(rgba(7, 15, 30, 0.82),
-                rgba(7, 15, 30, 0.88)),
+                    rgba(7, 15, 30, 0.88)),
                 url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -53,8 +53,8 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
@@ -69,8 +69,8 @@
             display: inline-block;
             padding: 10px 18px;
             border-radius: 50px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             font-size: 14px;
             margin-bottom: 28px;
             backdrop-filter: blur(10px);
@@ -90,7 +90,7 @@
         .left-content p {
             font-size: 17px;
             line-height: 1.9;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.85);
         }
 
         .feature-list {
@@ -102,7 +102,7 @@
             align-items: center;
             margin-bottom: 18px;
             font-size: 15px;
-            color: rgba(255,255,255,0.92);
+            color: rgba(255, 255, 255, 0.92);
         }
 
         .feature-item i {
@@ -115,68 +115,64 @@
            RIGHT SIDE
         ==========================*/
         .right-panel {
-        width: 45%;
-        position: relative;
-        background:
-        linear-gradient(
-            135deg,
-            #f8fafc 0%,
-            #ffffff 45%,
-            #f1f5f9 100%
-        );
+            width: 45%;
+            position: relative;
+            background:
+                linear-gradient(135deg,
+                    #f8fafc 0%,
+                    #ffffff 45%,
+                    #f1f5f9 100%);
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
 
-        overflow: hidden;
+            overflow: hidden;
         }
 
         .right-panel::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(
-            to bottom,
-            rgba(245, 158, 11, 0.15),
-            rgba(255,255,255,0.3),
-            rgba(245, 158, 11, 0.15)
-        );
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    rgba(245, 158, 11, 0.15),
+                    rgba(255, 255, 255, 0.3),
+                    rgba(245, 158, 11, 0.15));
         }
 
         .right-panel::after {
-        content: '';
-        position: absolute;
-        width: 320px;
-        height: 320px;
-        background: rgba(245, 158, 11, 0.05);
+            content: '';
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: rgba(245, 158, 11, 0.05);
 
-        border-radius: 50%;
+            border-radius: 50%;
 
-        top: -120px;
-        right: -120px;
+            top: -120px;
+            right: -120px;
 
-        filter: blur(10px);
+            filter: blur(10px);
         }
 
         .login-box {
-        width: 100%;
-        max-width: 420px;
+            width: 100%;
+            max-width: 420px;
 
-        background: rgba(255,255,255,0.75);
-        backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(18px);
 
-        border: 1px solid rgba(255,255,255,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.6);
 
-        border-radius: 28px;
+            border-radius: 28px;
 
-        padding: 40px;
+            padding: 40px;
 
-        box-shadow:0 10px 40px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
         }
 
         /* Logo */
@@ -186,23 +182,23 @@
         }
 
         .logo-wrapper img {
-        width: 92px;
-        height: 92px;
-        object-fit: contain;
-        margin-bottom: 18px;
+            width: 92px;
+            height: 92px;
+            object-fit: contain;
+            margin-bottom: 18px;
 
-        padding: 10px;
+            padding: 10px;
 
-        border-radius: 24px;
+            border-radius: 24px;
 
-        background: rgba(255,255,255,0.65);
+            background: rgba(255, 255, 255, 0.65);
 
-        backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
 
-        box-shadow:
-            0 8px 24px rgba(15, 23, 42, 0.08);
+            box-shadow:
+                0 8px 24px rgba(15, 23, 42, 0.08);
 
-        transition: all 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .logo-wrapper h2 {
@@ -218,8 +214,8 @@
         }
 
         .logo-wrapper img:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
         }
 
         /* Form */
@@ -408,9 +404,9 @@
             </h1>
 
             <p> Sistem Manajemen Gym Modern untuk Pengelolaan Data Member,
-            Membership, Transaksi, Jadwal Latihan, serta Monitoring
-            Aktivitas Kebugaran secara Profesional, Aman, dan Terintegrasi.
-           </p>
+                Membership, Transaksi, Jadwal Latihan, serta Monitoring
+                Aktivitas Kebugaran secara Profesional, Aman, dan Terintegrasi.
+            </p>
 
             <div class="feature-list">
 
@@ -485,14 +481,9 @@
 
                         <i class="bi bi-envelope"></i>
 
-                        <input
-                            type="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            class="form-control @error('email') is-invalid @enderror"
-                            placeholder="Masukkan email"
-                            required
-                        >
+                        <input type="email" name="email" value="{{ old('email') }}"
+                            class="form-control @error('email') is-invalid @enderror" placeholder="Masukkan email"
+                            required>
 
                     </div>
 
@@ -513,13 +504,9 @@
 
                         <i class="bi bi-lock"></i>
 
-                        <input
-                            type="password"
-                            name="password"
-                            class="form-control @error('password') is-invalid @enderror"
-                            placeholder="Masukkan password"
-                            required
-                        >
+                        <input type="password" name="password"
+                            class="form-control @error('password') is-invalid @enderror" placeholder="Masukkan password"
+                            required>
 
                     </div>
 
@@ -544,7 +531,7 @@
                 <!-- Button -->
                 <button type="submit" class="btn-login">
                     <i class="bi bi-box-arrow-in-right"></i>
-                    Masuk ke Dashboard
+                    Login
                 </button>
 
             </form>

@@ -77,7 +77,7 @@
                                 <i class="bi bi-gender-male me-1"></i> Laki-laki
                             </span>
                             @else
-                            <span class="badge bg-pink" style="background: #ec4899;">
+                            <span class="badge bg-pink">
                                 <i class="bi bi-gender-female me-1"></i> Perempuan
                             </span>
                             @endif
@@ -120,7 +120,7 @@
     </div>
     
     @if($anggota->hasPages())
-    <div class="card-footer bg-white">
+    <div class="card-footer pagination-compact">
         {{ $anggota->links() }}
     </div>
     @endif

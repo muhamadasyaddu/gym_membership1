@@ -116,7 +116,7 @@
     </div>
     
     @if($users->hasPages())
-    <div class="card-footer bg-white">
+    <div class="card-footer pagination-compact">
         {{ $users->links() }}
     </div>
     @endif

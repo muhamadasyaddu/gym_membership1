@@ -112,7 +112,7 @@
     </div>
     
     @if($alat->hasPages())
-    <div class="card-footer bg-white">
+    <div class="card-footer pagination-compact">
         {{ $alat->links() }}
     </div>
     @endif

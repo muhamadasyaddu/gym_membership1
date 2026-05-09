@@ -100,7 +100,7 @@
     </div>
     
     @if($paket->hasPages())
-    <div class="card-footer bg-white">
+    <div class="card-footer pagination-compact">
         {{ $paket->links() }}
     </div>
     @endif
