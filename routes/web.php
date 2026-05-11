@@ -39,7 +39,9 @@ Route::middleware('auth')->group(function () {
     });
     
     // Anggota
-    Route::resource('anggota', AnggotaController::class)->parameters([
+
+Route::resource('anggota', AnggotaController::class)
+    ->parameters([
         'anggota' => 'anggota'
     ]);
     

@@ -15,7 +15,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form method="POST" action="{{ route('anggota.update', $anggota) }}">
+        <form method="POST" action="{{ route('anggota.update', $anggota->id) }}">
             @csrf @method('PUT')
             
             <div class="row">
