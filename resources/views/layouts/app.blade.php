@@ -15,23 +15,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --sidebar-bg: #1e293b;
-            --sidebar-hover: #334155;
+        :root{
+
+        --primary-color:#0f766e;
+        --primary-hover:#115e59;
+
+        --sidebar-bg:#111827;
+        --sidebar-hover:#1f2937;
+
+        --body-bg:#f8fafc;
+
+        --card-bg:#ffffff;
+
+        --text-primary:#111827;
+        --text-secondary:#6b7280;
+
+        --border-color:#e5e7eb;
+
         }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
+        body{
+        font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+        background:#f8fafc;
+        color:#111827;
+
         }
         
         /* Sidebar */
-        .sidebar {
-            width: 260px;
-            min-height: 100vh;
-            background: var(--sidebar-bg);
+        .sidebar{
+
+        width:260px;
+        min-height:100vh;
+
+        background:linear-gradient(
+            180deg,
+            #111827 0%,
+            #0f172a 100%
+        );
+
+        border-right:1px solid rgba(255,255,255,.08);
             position: fixed;
             left: 0;
             top: 0;
@@ -42,6 +64,20 @@
         .sidebar-brand {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+
+        .sidebar-brand img{
+
+        width:46px;
+        height:46px;
+
+        border-radius:12px;
+
+        background:white;
+
+        padding:6px;
+
         }
         
         .sidebar-brand h4 {
@@ -77,9 +113,16 @@
             color: #fff;
         }
         
-        .sidebar-menu .nav-link.active {
-            background: var(--primary-color);
-            color: #fff;
+        .sidebar-menu .nav-link.active{
+
+        background:rgba(15,118,110,.15);
+
+        color:#5eead4;
+
+        border-left:4px solid #14b8a6;
+
+        border-radius:10px;
+
         }
         
         .sidebar-menu .nav-link i {
@@ -108,46 +151,82 @@
         }
         
         /* Top Navbar */
-        .top-navbar {
-            background: #fff;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .top-navbar{
+
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+
+        height:72px;
+
+        padding:0 24px;
+
+        background:#ffffff;
+
+        border-bottom:1px solid #e5e7eb;
+
+        position:sticky;
+        top:0;
+        z-index:50;
+
         }
+
+
         
-        .user-dropdown {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
+        .user-dropdown{
+
+        display:flex;
+        align-items:center;
+        gap:12px;
+
+        padding:8px 14px;
+
+        border-radius:12px;
+
+        transition:.2s;
+
         }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 600;
+
+        .user-dropdown:hover{
+
+            background:#f8fafc;
+
         }
-        
-        .user-info {
-            line-height: 1.2;
+
+        .user-avatar{
+
+            width:42px;
+            height:42px;
+
+            border-radius:50%;
+
+            background:#0f766e;
+
+            color:white;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-weight:700;
+
         }
-        
-        .user-info .name {
-            font-weight: 600;
-            color: #1e293b;
+
+        .user-info .name{
+
+            font-size:14px;
+            font-weight:600;
+
+            color:#111827;
+
         }
-        
-        .user-info .role {
-            font-size: 0.8rem;
-            color: #64748b;
+
+        .user-info .role{
+
+            font-size:12px;
+
+            color:#6b7280;
+
         }
         
         /* Page Content */
@@ -172,10 +251,22 @@
         }
         
         /* Cards */
-        .card {
-            border: none;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .card{
+
+        border:1px solid #e5e7eb;
+
+        border-radius:16px;
+
+        box-shadow:
+            0 4px 12px rgba(0,0,0,.04);
+
+        transition:.25s;
+
+        }
+        .card:hover{
+
+            transform:translateY(-2px);
+
         }
         
         .card-header {
@@ -186,14 +277,16 @@
         }
         
         /* Stat Cards */
-        .stat-card {
-            background: #fff;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .stat-card{
+
+        background:white;
+
+        padding:24px;
+
+        border-radius:16px;
+
+        border:1px solid #e5e7eb;
+
         }
         
         .stat-icon {
@@ -226,11 +319,14 @@
             color: #3b82f6;
         }
         
-        .stat-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #1e293b;
-            line-height: 1;
+        .stat-value{
+
+        font-size:28px;
+
+        font-weight:700;
+
+        color:#111827;
+
         }
         
         .stat-label {
@@ -535,33 +631,67 @@
     <div class="main-content">
         <!-- Top Navbar -->
         <div class="top-navbar">
-            <div>
-                <button class="btn btn-light d-lg-none me-2" id="sidebarToggle">
+
+            <div class="d-flex align-items-center">
+
+                <button class="btn btn-light d-lg-none me-3" id="sidebarToggle">
                     <i class="bi bi-list"></i>
                 </button>
+
             </div>
-            
+
             <div class="dropdown">
-                <div class="user-dropdown" data-bs-toggle="dropdown">
-                    <div class="user-avatar">{{ auth()->user()->initials }}</div>
-                    <div class="user-info d-none d-md-block">
-                        <div class="name">{{ auth()->user()->nama }}</div>
-                        <div class="role">{{ auth()->user()->role_label }}</div>
+
+                <div class="user-dropdown"
+                    data-bs-toggle="dropdown">
+
+                    <div class="user-avatar">
+                        {{ auth()->user()->initials }}
                     </div>
-                    <i class="bi bi-chevron-down d-none d-md-block"></i>
+
+                    <div class="user-info d-none d-md-block">
+
+                        <div class="name">
+                            {{ auth()->user()->nama }}
+                        </div>
+
+                        <div class="role">
+                            {{ auth()->user()->role_label }}
+                        </div>
+
+                    </div>
+
+                    <i class="bi bi-chevron-down"></i>
+
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+
                     <li>
-                        <a class="dropdown-item" href="{{ route('logout') }}" 
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        <a class="dropdown-item"
+                        href="{{ route('logout') }}"
+                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+
+                            <i class="bi bi-box-arrow-right me-2"></i>
+
+                            Logout
+
                         </a>
                     </li>
+
                 </ul>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+
+                <form id="logout-form"
+                    action="{{ route('logout') }}"
+                    method="POST"
+                    class="d-none">
+
                     @csrf
+
                 </form>
+
             </div>
+
         </div>
         
         <!-- Page Content -->

@@ -3,9 +3,27 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-subtitle">Selamat datang kembali, {{ auth()->user()->nama }}!</p>
+
+<div class="d-flex justify-content-between align-items-center">
+
+    <div>
+        <h1 class="page-title">
+            Dashboard Operasional
+        </h1>
+
+        <p class="page-subtitle">
+            Monitoring anggota, transaksi dan aktivitas gym secara real-time.
+        </p>
+    </div>
+
+    <div class="text-end">
+
+        <small class="text-muted">
+            {{ now()->format('d F Y') }}
+        </small>
+
+    </div>
+
 </div>
 
 <!-- Statistics -->
@@ -13,7 +31,7 @@
     <div class="col-6 col-lg-3">
         <div class="stat-card">
             <div class="stat-icon primary">
-                <i class="bi bi-people-fill"></i>
+                <i class="bi bi-person-badge"></i>
             </div>
             <div>
                 <div class="stat-value">{{ $totalAnggota }}</div>
@@ -35,7 +53,7 @@
     <div class="col-6 col-lg-3">
         <div class="stat-card">
             <div class="stat-icon warning">
-                <i class="bi bi-calendar-check-fill"></i>
+                <i class="bi bi-clipboard2-check"></i>
             </div>
             <div>
                 <div class="stat-value">{{ $presensiHariIni }}</div>
@@ -46,7 +64,7 @@
     <div class="col-6 col-lg-3">
         <div class="stat-card">
             <div class="stat-icon info">
-                <i class="bi bi-cash-stack"></i>
+                <i class="bi bi-wallet2"></i>
             </div>
             <div>
                 <div class="stat-value">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
@@ -207,21 +225,6 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    .stat-card {
-        background: #fff;
-        border-radius: 0.75rem;
-        padding: 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        height: 100%;
-    }
-</style>
-@endpush
 
 @push('scripts')
 <!-- Chart.js -->
