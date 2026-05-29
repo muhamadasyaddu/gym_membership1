@@ -22,7 +22,7 @@ class PresensiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'anggota_id' => 'required|exists:anggota,id',
+            'transaksi_id' => 'required|exists:transaksi,id',
             'waktu_masuk' => 'nullable|date',
         ];
     }
@@ -33,8 +33,8 @@ class PresensiRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'anggota_id.required' => 'Anggota wajib dipilih.',
-            'anggota_id.exists' => 'Anggota tidak ditemukan.',
+            'transaksi_id.required' => 'Transaksi wajib dipilih.',
+            'transaksi_id.exists' => 'Transaksi tidak ditemukan.',
             'waktu_masuk.date' => 'Format waktu tidak valid.',
         ];
     }

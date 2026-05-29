@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presensi;
+use App\Models\Transaksi;
 use App\Models\Anggota;
 use App\Http\Requests\PresensiRequest;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PresensiController extends Controller
 {
@@ -14,12 +16,12 @@ class PresensiController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Presensi::with('anggota');
+        $query = Presensi::with(['transaksi.anggota', 'transaksi.paket']);
 
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('anggota', function ($q) use ($search) {
+            $query->whereHas('transaksi.anggota', function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%");
             });
         }
@@ -35,33 +37,45 @@ class PresensiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource (QR Scanner).
      */
     public function create()
     {
-        $anggota = Anggota::where('status', 'aktif')->orderBy('nama')->get();
+        // View create will be used for the manual fallback if needed, but primarily we scan at index or a dedicated scan page.
+        // Let's pass active transactions for manual fallback
+        $transaksis = Transaksi::with('anggota')->where('status', 'lunas')
+            ->whereDate('waktu_berakhir', '>=', today())
+            ->get();
 
-        return view('presensi.create', compact('anggota'));
+        return view('presensi.create', compact('transaksis'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage (Manual Entry).
      */
     public function store(PresensiRequest $request)
     {
-        // Check if already checked in today
-        $existingPresensi = Presensi::where('anggota_id', $request->anggota_id)
+        $transaksi = Transaksi::find($request->transaksi_id);
+
+        if (!$transaksi || !$transaksi->isMembershipActive()) {
+            return redirect()->back()
+                ->with('error', 'Transaksi tidak valid atau membership sudah tidak aktif.')
+                ->withInput();
+        }
+
+        // Check if already checked in today for this transaction
+        $existingPresensi = Presensi::where('transaksi_id', $request->transaksi_id)
             ->whereDate('waktu_masuk', today())
             ->first();
 
         if ($existingPresensi) {
             return redirect()->back()
-                ->with('error', 'Anggota sudah melakukan presensi hari ini.')
+                ->with('error', 'Anggota sudah melakukan presensi hari ini untuk paket tersebut.')
                 ->withInput();
         }
 
         Presensi::create([
-            'anggota_id' => $request->anggota_id,
+            'transaksi_id' => $request->transaksi_id,
             'waktu_masuk' => $request->waktu_masuk ?? now(),
         ]);
 
@@ -70,12 +84,96 @@ class PresensiController extends Controller
     }
 
     /**
+     * Handle QR Code Scan (AJAX)
+     */
+    public function scan(Request $request)
+    {
+        $request->validate([
+            'qr_code' => 'required|string',
+        ]);
+
+        $qrCode = $request->qr_code;
+        
+        // Expected format: TRX-123
+        if (strpos($qrCode, 'TRX-') !== 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Format QR Code tidak valid.'
+            ], 400);
+        }
+
+        $transaksiId = str_replace('TRX-', '', $qrCode);
+        $transaksi = Transaksi::with('anggota', 'paket')->find($transaksiId);
+
+        if (!$transaksi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Transaksi tidak ditemukan.'
+            ], 404);
+        }
+
+        // Validasi status lunas
+        if ($transaksi->status !== 'lunas') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaksi belum lunas.'
+            ], 400);
+        }
+
+        // Validasi masa aktif
+        $today = Carbon::now()->startOfDay();
+        $waktuMulai = Carbon::parse($transaksi->waktu_mulai)->startOfDay();
+        $waktuBerakhir = Carbon::parse($transaksi->waktu_berakhir)->startOfDay();
+
+        if ($today->isBefore($waktuMulai)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Membership belum dimulai. (Mulai: ' . $waktuMulai->format('d/m/Y') . ')'
+            ], 400);
+        }
+
+        if ($today->isAfter($waktuBerakhir)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Membership sudah kedaluwarsa. (Berakhir: ' . $waktuBerakhir->format('d/m/Y') . ')'
+            ], 400);
+        }
+
+        // Check if already checked in today
+        $existingPresensi = Presensi::where('transaksi_id', $transaksi->id)
+            ->whereDate('waktu_masuk', today())
+            ->first();
+
+        if ($existingPresensi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anggota sudah melakukan presensi hari ini.'
+            ], 400);
+        }
+
+        // Insert Presensi
+        $presensi = Presensi::create([
+            'transaksi_id' => $transaksi->id,
+            'waktu_masuk' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Presensi berhasil dicatat!',
+            'data' => [
+                'nama' => $transaksi->anggota->nama,
+                'paket' => $transaksi->paket->nama_paket,
+                'waktu' => $presensi->waktu_masuk->format('H:i:s'),
+            ]
+        ]);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Presensi $presensi)
     {
-        $presensi->load('anggota');
-
+        $presensi->load('transaksi.anggota', 'transaksi.paket');
         return view('presensi.show', compact('presensi'));
     }
 
@@ -84,9 +182,8 @@ class PresensiController extends Controller
      */
     public function edit(Presensi $presensi)
     {
-        $anggota = Anggota::orderBy('nama')->get();
-
-        return view('presensi.edit', compact('presensi', 'anggota'));
+        $transaksis = Transaksi::with('anggota')->where('status', 'lunas')->get();
+        return view('presensi.edit', compact('presensi', 'transaksis'));
     }
 
     /**
@@ -112,47 +209,13 @@ class PresensiController extends Controller
     }
 
     /**
-     * Quick presensi for AJAX request
+     * Quick presensi for AJAX request (Legacy fallback)
      */
     public function quickPresensi(Request $request)
     {
-        $request->validate([
-            'anggota_id' => 'required|exists:anggota,id',
-        ]);
-
-        // Check if member is active
-        $anggota = Anggota::find($request->anggota_id);
-        if ($anggota->status !== 'aktif') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anggota tidak aktif. Silakan perpanjang membership.',
-            ], 400);
-        }
-
-        // Check if already checked in today
-        $existingPresensi = Presensi::where('anggota_id', $request->anggota_id)
-            ->whereDate('waktu_masuk', today())
-            ->first();
-
-        if ($existingPresensi) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anggota sudah melakukan presensi hari ini.',
-            ], 400);
-        }
-
-        $presensi = Presensi::create([
-            'anggota_id' => $request->anggota_id,
-            'waktu_masuk' => now(),
-        ]);
-
         return response()->json([
-            'success' => true,
-            'message' => 'Presensi berhasil dicatat pada ' . $presensi->waktu_masuk->format('H:i'),
-            'data' => [
-                'nama' => $anggota->nama,
-                'waktu' => $presensi->formatted_waktu,
-            ],
-        ]);
+            'success' => false,
+            'message' => 'Metode ini sudah digantikan dengan QR Scanner.',
+        ], 400);
     }
 }

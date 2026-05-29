@@ -14,26 +14,46 @@ class PresensiSeeder extends Seeder
      */
     public function run(): void
     {
-        $anggotaAktif = Anggota::where('status', 'aktif')->get();
+        $transaksis = \App\Models\Transaksi::where('status', 'lunas')->get();
 
-        if ($anggotaAktif->isEmpty()) {
-            $this->command->warn('Please run AnggotaSeeder first!');
+        if ($transaksis->isEmpty()) {
+            $this->command->warn('Please run TransaksiSeeder first!');
             return;
         }
 
         $presensiRecords = [];
         $trackedDates = []; // Separate tracking array from data records
 
-        // Create attendance records for active members
-        foreach ($anggotaAktif as $anggota) {
-            $trackedDates[$anggota->id] = [];
+        // Create attendance records for valid transactions
+        foreach ($transaksis as $transaksi) {
+            $trackedDates[$transaksi->id] = [];
 
-            // Random number of visits (10-30 visits)
-            $visitCount = rand(10, 30);
+            // Random number of visits (5-15 visits per transaction)
+            $visitCount = rand(5, 15);
 
             for ($i = 0; $i < $visitCount; $i++) {
-                // Random date in last 60 days
-                $date = Carbon::now()->subDays(rand(1, 60));
+                // Ensure date is within the transaction period
+                $start = \Carbon\Carbon::parse($transaksi->waktu_mulai);
+                $end = \Carbon\Carbon::parse($transaksi->waktu_berakhir);
+                $today = \Carbon\Carbon::now();
+                
+                // If end date is in the future, we cap the random date to today
+                $maxDate = $end->isFuture() ? $today : $end;
+                
+                if ($start->isAfter($maxDate)) {
+                    continue; // Skip if it hasn't started yet relative to max date
+                }
+
+                $diffInDays = $start->diffInDays($maxDate);
+                
+                // Avoid error if diff is 0
+                if ($diffInDays == 0) {
+                    $randomDays = 0;
+                } else {
+                    $randomDays = rand(0, $diffInDays);
+                }
+
+                $date = $start->copy()->addDays($randomDays);
                 
                 // Random time between 6 AM and 9 PM
                 $hour = rand(6, 21);
@@ -42,19 +62,19 @@ class PresensiSeeder extends Seeder
                 
                 $waktuMasuk = $date->setTime($hour, $minute, $second);
 
-                // Avoid duplicate attendance for same member on same day
+                // Avoid duplicate attendance for same transaction on same day
                 $dateKey = $waktuMasuk->format('Y-m-d');
                 
-                if (!in_array($dateKey, $trackedDates[$anggota->id])) {
+                if (!in_array($dateKey, $trackedDates[$transaksi->id])) {
                     $presensiRecords[] = [
-                        'anggota_id' => $anggota->id,
+                        'transaksi_id' => $transaksi->id,
                         'waktu_masuk' => $waktuMasuk->format('Y-m-d H:i:s'),
                         'created_at' => $waktuMasuk,
                         'updated_at' => $waktuMasuk,
                     ];
                     
-                    // Track dates for this member in separate array
-                    $trackedDates[$anggota->id][] = $dateKey;
+                    // Track dates for this transaction
+                    $trackedDates[$transaksi->id][] = $dateKey;
                 }
             }
         }

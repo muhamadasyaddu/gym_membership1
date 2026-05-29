@@ -6,46 +6,36 @@
     <div class="page-header d-flex flex-wrap justify-content-between align-items-center">
         <div>
             <h1 class="page-title">Presensi</h1>
-            <p class="page-subtitle">Kelola presensi anggota gym</p>
+            <p class="page-subtitle">Kelola presensi anggota gym melalui QR Code</p>
         </div>
         <div class="d-flex gap-2">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#quickPresensiModal">
-                <i class="bi bi-lightning-charge me-2"></i> Quick Presensi
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanQrModal" id="btnOpenScanner">
+                <i class="bi bi-qr-code-scan me-2"></i> Scan QR Presensi
             </button>
-            <a href="{{ route('presensi.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i> Tambah Presensi
-            </a>
         </div>
     </div>
 
-    <!-- Quick Presensi Modal -->
-    <div class="modal fade" id="quickPresensiModal" tabindex="-1">
+    <!-- Scan QR Modal -->
+    <div class="modal fade" id="scanQrModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-lightning-charge me-2"></i>Quick Presensi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title"><i class="bi bi-qr-code-scan me-2"></i>Scan QR Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="btnCloseScanner"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="quick_anggota" class="form-label">Pilih Anggota Aktif</label>
-                        <select class="form-select" id="quick_anggota">
-                            <option value="">-- Pilih Anggota --</option>
-                            @php
-                                $anggotaAktif = \App\Models\Anggota::where('status', 'aktif')->orderBy('nama')->get();
-                            @endphp
-                            @foreach($anggotaAktif as $a)
-                                <option value="{{ $a->id }}">{{ $a->nama }}</option>
-                            @endforeach
-                        </select>
+                <div class="modal-body text-center">
+                    <div id="reader" width="600px"></div>
+                    
+                    <div class="my-3 text-muted small text-uppercase">-- Atau Masukkan Manual --</div>
+                    <div class="input-group mb-3">
+                        <input type="text" id="manualQrInput" class="form-control" placeholder="Contoh: TRX-15">
+                        <button class="btn btn-primary" type="button" id="btnManualSubmit">Proses</button>
                     </div>
-                    <div id="quickResult" class="alert d-none"></div>
+
+                    <div id="scanResult" class="alert d-none mt-3"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-success" id="btnQuickPresensi">
-                        <i class="bi bi-check-lg me-1"></i> Catat Presensi
-                    </button>
                 </div>
             </div>
         </div>
@@ -98,9 +88,9 @@
                     <thead>
                         <tr>
                             <th>Anggota</th>
+                            <th>Paket</th>
                             <th>Tanggal</th>
                             <th>Jam Masuk</th>
-                            <th>Status Member</th>
                             <th width="100">Aksi</th>
                         </tr>
                     </thead>
@@ -110,23 +100,22 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="user-avatar me-2" style="width: 36px; height: 36px; font-size: 0.8rem;">
-                                            {{ $item->anggota->initials }}
+                                            {{ $item->transaksi->anggota->initials }}
                                         </div>
                                         <div>
-                                            <div class="fw-semibold">{{ $item->anggota->nama }}</div>
-                                            <small class="text-muted">{{ $item->anggota->no_telp }}</small>
+                                            <div class="fw-semibold">{{ $item->transaksi->anggota->nama }}</div>
+                                            <small class="text-muted">{{ $item->transaksi->anggota->no_telp }}</small>
                                         </div>
                                     </div>
+                                </td>
+                                <td>
+                                    {{ $item->transaksi->paket->nama_paket }}<br>
+                                    <small class="text-muted">TRX-{{ $item->transaksi->id }}</small>
                                 </td>
                                 <td>{{ $item->tanggal }}</td>
                                 <td>
                                     <span class="badge bg-success">
                                         <i class="bi bi-clock me-1"></i> {{ $item->jam }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $item->anggota->status_badge }}">
-                                        {{ $item->anggota->status_label }}
                                     </span>
                                 </td>
                                 <td>
@@ -167,44 +156,94 @@
 @endsection
 
 @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
-        document.getElementById('btnQuickPresensi').addEventListener('click', function () {
-            const anggotaId = document.getElementById('quick_anggota').value;
-            const resultDiv = document.getElementById('quickResult');
+        let html5QrcodeScanner;
 
-            if (!anggotaId) {
-                resultDiv.className = 'alert alert-danger';
-                resultDiv.textContent = 'Pilih anggota terlebih dahulu!';
-                resultDiv.classList.remove('d-none');
-                return;
-            }
+        function onScanSuccess(decodedText, decodedResult) {
+            // Stop scanner instantly to prevent multiple scans
+            html5QrcodeScanner.clear();
 
-            fetch('{{ route("presensi.quick") }}', {
+            const resultDiv = document.getElementById('scanResult');
+            resultDiv.className = 'alert alert-info';
+            resultDiv.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Memproses...';
+            resultDiv.classList.remove('d-none');
+
+            fetch('{{ route("presensi.scan") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify({ anggota_id: anggotaId })
+                body: JSON.stringify({ qr_code: decodedText })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        resultDiv.className = 'alert alert-success';
-                        resultDiv.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + data.message +
-                            '<br><small>' + data.data.nama + ' - ' + data.data.waktu + '</small>';
-                        setTimeout(() => location.reload(), 1500);
-                    } else {
-                        resultDiv.className = 'alert alert-danger';
-                        resultDiv.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>' + data.message;
-                    }
-                    resultDiv.classList.remove('d-none');
-                })
-                .catch(error => {
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultDiv.className = 'alert alert-success';
+                    resultDiv.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + data.message +
+                        '<br><strong>' + data.data.nama + '</strong> (' + data.data.paket + ')<br>Jam: ' + data.data.waktu;
+                    setTimeout(() => location.reload(), 2000);
+                } else {
                     resultDiv.className = 'alert alert-danger';
-                    resultDiv.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
-                    resultDiv.classList.remove('d-none');
-                });
+                    resultDiv.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>' + data.message;
+                    
+                    // Allow rescanning after 3 seconds on fail
+                    setTimeout(() => {
+                        resultDiv.classList.add('d-none');
+                        startScanner();
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                resultDiv.className = 'alert alert-danger';
+                resultDiv.textContent = 'Terjadi kesalahan sistem saat menghubungi server.';
+                
+                setTimeout(() => {
+                    resultDiv.classList.add('d-none');
+                    startScanner();
+                }, 3000);
+            });
+        }
+
+        function onScanFailure(error) {
+            // handle scan failure, usually better to ignore and keep scanning
+            // console.warn(`Code scan error = ${error}`);
+        }
+
+        function startScanner() {
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader",
+                { fps: 10, qrbox: {width: 250, height: 250} },
+                /* verbose= */ false);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+
+        // Handle modal events to start/stop scanner
+        const modal = document.getElementById('scanQrModal');
+        modal.addEventListener('shown.bs.modal', function () {
+            startScanner();
+        });
+
+        modal.addEventListener('hidden.bs.modal', function () {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+            }
+            document.getElementById('scanResult').classList.add('d-none');
+            document.getElementById('manualQrInput').value = '';
+        });
+
+        document.getElementById('btnManualSubmit').addEventListener('click', function() {
+            const val = document.getElementById('manualQrInput').value;
+            if (val.trim() === '') return;
+            
+            if (html5QrcodeScanner) {
+                try {
+                    html5QrcodeScanner.clear();
+                } catch(e) {}
+            }
+            onScanSuccess(val, null);
         });
     </script>
 @endpush

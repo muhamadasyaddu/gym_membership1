@@ -27,6 +27,13 @@
                     {{ $transaksi->status_label }}
                 </span>
                 
+                @if($transaksi->status === 'lunas' && $transaksi->isMembershipActive())
+                <div class="mb-4 mt-2">
+                    <p class="text-muted small mb-2">QR Code Presensi</p>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TRX-{{ $transaksi->id }}" alt="QR Presensi" class="img-fluid border p-1 rounded bg-white">
+                </div>
+                @endif
+                
                 <h3 class="text-primary mb-3">{{ $transaksi->formatted_total }}</h3>
                 
                 <div class="d-flex justify-content-center gap-2">

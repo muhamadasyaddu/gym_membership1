@@ -52,6 +52,7 @@ Route::resource('anggota', AnggotaController::class)
     Route::resource('transaksi', TransaksiController::class);
     
     // Presensi
+    Route::post('/presensi/scan', [PresensiController::class, 'scan'])->name('presensi.scan');
     Route::resource('presensi', PresensiController::class);
     Route::post('/presensi/quick', [PresensiController::class, 'quickPresensi'])
         ->name('presensi.quick');

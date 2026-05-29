@@ -20,19 +20,10 @@
             
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="anggota_id" class="form-label">Anggota <span class="text-danger">*</span></label>
-                    <select class="form-select @error('anggota_id') is-invalid @enderror" 
-                            id="anggota_id" name="anggota_id" required>
-                        <option value="">Pilih anggota</option>
-                        @foreach($anggota as $a)
-                        <option value="{{ $a->id }}" {{ old('anggota_id', $transaksi->anggota_id) == $a->id ? 'selected' : '' }}">
-                            {{ $a->nama }} ({{ $a->status_label }})
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('anggota_id')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <label class="form-label">Anggota</label>
+                    <input type="text" class="form-control" value="{{ $transaksi->anggota->nama }} ({{ $transaksi->anggota->status_label }})" disabled>
+                    <!-- Hidden input so the value is still submitted -->
+                    <input type="hidden" name="anggota_id" value="{{ $transaksi->anggota_id }}">
                 </div>
                 
                 <div class="col-md-6 mb-3">

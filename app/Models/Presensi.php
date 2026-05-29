@@ -15,7 +15,7 @@ class Presensi extends Model
     protected $table = 'presensi';
 
     protected $fillable = [
-        'anggota_id',
+        'transaksi_id',
         'waktu_masuk',
     ];
 
@@ -24,11 +24,11 @@ class Presensi extends Model
     ];
 
     /**
-     * Relationship with Anggota
+     * Relationship with Transaksi
      */
-    public function anggota()
+    public function transaksi()
     {
-        return $this->belongsTo(Anggota::class);
+        return $this->belongsTo(Transaksi::class);
     }
 
     /**

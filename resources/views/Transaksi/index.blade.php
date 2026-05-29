@@ -75,7 +75,8 @@
                         <td>{{ $item->paket->nama_paket }}</td>
                         <td>
                             <small>
-                                {{ $item->waktu_mulai->format('d/m/Y') }} - <br>
+                                {{ $item->waktu_mulai->format('d/m/Y') }} <br>
+                                ------------- <br>
                                 {{ $item->waktu_berakhir->format('d/m/Y') }}
                             </small>
                         </td>

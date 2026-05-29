@@ -72,7 +72,7 @@
                         </td>
                         <td>{{ $item->no_telp }}</td>
                         <td>
-                            @if($item->jenis_kelamin == 'L')
+                            @if($item->jenis_kelamin == 'laki_laki')
                             <span class="badge bg-primary">
                                 <i class="bi bi-gender-male me-1"></i> Laki-laki
                             </span>

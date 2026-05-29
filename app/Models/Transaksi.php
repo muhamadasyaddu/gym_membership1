@@ -48,6 +48,14 @@ class Transaksi extends Model
     }
 
     /**
+     * Relationship with Presensi
+     */
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class);
+    }
+
+    /**
      * Get formatted total price
      */
     public function getFormattedTotalAttribute(): string

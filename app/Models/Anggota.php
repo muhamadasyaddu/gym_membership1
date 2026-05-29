@@ -38,12 +38,12 @@ class Anggota extends Model
     ];
 
     /**
-     * Relasi One to Many dengan Presensi
-     * Anggota memiliki banyak presensi
+     * Relasi HasManyThrough dengan Presensi (via Transaksi)
+     * Anggota memiliki banyak presensi melalui transaksi
      */
     public function presensi()
     {
-        return $this->hasMany(Presensi::class, 'anggota_id');
+        return $this->hasManyThrough(Presensi::class, Transaksi::class);
     }
 
     /**
