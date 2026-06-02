@@ -63,7 +63,19 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="stat-icon primary me-2" style="width: 36px; height: 36px; font-size: 0.875rem;">
-                                    <i class="bi bi-bicycle"></i>
+                                    @if($item->gambar)
+                                    <img src="{{ asset('storage/' . $item->gambar) }}"
+                                        class="rounded"
+                                        width="50"
+                                        height="50"
+                                        style="object-fit:cover;">
+                                    @else
+                                    <img src="{{ asset('images/default-gym.png') }}"
+                                        class="rounded"
+                                        width="50"
+                                        height="50"
+                                        style="object-fit:cover;">
+                                    @endif
                                 </div>
                                 <span class="fw-semibold">{{ $item->nama }}</span>
                             </div>

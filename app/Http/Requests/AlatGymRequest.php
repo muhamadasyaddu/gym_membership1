@@ -24,6 +24,7 @@ class AlatGymRequest extends FormRequest
         return [
             'nama' => 'required|string|max:255',
             'merek' => 'nullable|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'kondisi' => 'required|in:baik,rusak_ringan,rusak_berat',
             'waktu_pembelian' => 'nullable|date',
             'keterangan' => 'nullable|string',

@@ -14,6 +14,7 @@ class AlatGym extends Model
     protected $fillable = [
         'nama',
         'merek',
+        'gambar',
         'kondisi',
         'waktu_pembelian',
         'keterangan',

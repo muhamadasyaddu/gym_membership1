@@ -48,6 +48,8 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
+                    <tr>
+                        <th>Member ID</th>
                         <th>Anggota</th>
                         <th>No. Telepon</th>
                         <th>Jenis Kelamin</th>
@@ -59,6 +61,9 @@
                 <tbody>
                     @forelse($anggota as $item)
                     <tr>
+
+                         <td> {{ $item->kode_anggota }}</td>
+
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="user-avatar me-2" style="width: 36px; height: 36px; font-size: 0.8rem;">
@@ -66,7 +71,7 @@
                                 </div>
                                 <div>
                                     <div class="fw-semibold">{{ $item->nama }}</div>
-                                    <small class="text-muted">ID: {{ $item->id }}</small>
+                                    <small class="text-muted">  {{ $item->kode_anggota }}  </small>
                                 </div>
                             </div>
                         </td>

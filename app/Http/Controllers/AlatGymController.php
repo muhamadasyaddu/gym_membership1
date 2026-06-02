@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AlatGym;
 use App\Http\Requests\AlatGymRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AlatGymController extends Controller
 {
@@ -47,7 +48,14 @@ class AlatGymController extends Controller
      */
     public function store(AlatGymRequest $request)
     {
-        AlatGym::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $request->file('gambar')
+                ->store('alat-gym', 'public');
+        }
+
+        AlatGym::create($data);
 
         return redirect()->route('alat-gym.index')
             ->with('success', 'Alat gym berhasil ditambahkan.');
@@ -74,7 +82,19 @@ class AlatGymController extends Controller
      */
     public function update(AlatGymRequest $request, AlatGym $alatGym)
     {
-        $alatGym->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('gambar')) {
+
+            if ($alatGym->gambar) {
+                Storage::disk('public')->delete($alatGym->gambar);
+            }
+
+            $data['gambar'] = $request->file('gambar')
+                ->store('alat-gym', 'public');
+        }
+
+        $alatGym->update($data);
 
         return redirect()->route('alat-gym.index')
             ->with('success', 'Alat gym berhasil diperbarui.');
@@ -85,6 +105,10 @@ class AlatGymController extends Controller
      */
     public function destroy(AlatGym $alatGym)
     {
+        if ($alatGym->gambar) {
+            Storage::disk('public')->delete($alatGym->gambar);
+        }
+
         $alatGym->delete();
 
         return redirect()->route('alat-gym.index')

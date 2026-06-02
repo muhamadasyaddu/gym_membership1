@@ -62,21 +62,40 @@
                     @forelse($transaksi as $item)
                     <tr>
                         <td>
-                            <span class="fw-semibold">#TR{{ str_pad($item->id, 4, '0', STR_PAD_LEFT) }}</span>
+                            <div class="fw-semibold">
+                                #TR{{ str_pad($item->id, 4, '0', STR_PAD_LEFT) }}
+                            </div>
+
+                            <small class="text-muted">
+                                {{ $item->created_at->format('d/m/Y') }}
+                            </small>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <div class="user-avatar me-2" style="width: 32px; height: 32px; font-size: 0.75rem;">
+                                <div class="user-avatar me-2"
+                                    style="width: 32px; height: 32px; font-size: 0.75rem;">
                                     {{ $item->anggota->initials }}
                                 </div>
-                                {{ $item->anggota->nama }}
+
+                                <div>
+                                    <div class="fw-semibold">
+                                        {{ $item->anggota->nama }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ $item->anggota->kode_anggota }}
+                                    </small>
+                                </div>
                             </div>
                         </td>
                         <td>{{ $item->paket->nama_paket }}</td>
                         <td>
                             <small>
-                                {{ $item->waktu_mulai->format('d/m/Y') }} <br>
-                                ------------- <br>
+                                Mulai:
+                                {{ $item->waktu_mulai->format('d/m/Y') }}
+                                <br>
+
+                                Berakhir:
                                 {{ $item->waktu_berakhir->format('d/m/Y') }}
                             </small>
                         </td>

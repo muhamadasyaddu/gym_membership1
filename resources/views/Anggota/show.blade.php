@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label text-muted mb-1">ID Anggota</label>
-                        <p class="fw-semibold mb-0">#{{ $anggota->id }}</p>
+                        <p class="fw-semibold mb-0">{{ $anggota->kode_anggota }}</p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label text-muted mb-1">Nomor Telepon</label>

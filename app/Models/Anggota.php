@@ -20,6 +20,7 @@ class Anggota extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'kode_anggota',
         'nama',
         'no_telp',
         'alamat',
@@ -91,5 +92,18 @@ class Anggota extends Model
             if (strlen($initials) >= 2) break;
         }
         return $initials ?: 'A';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($anggota) {
+
+            $lastId = self::max('id') + 1;
+
+            $anggota->kode_anggota =
+                'MBR-' . str_pad($lastId, 4, '0', STR_PAD_LEFT);
+        });
     }
 }

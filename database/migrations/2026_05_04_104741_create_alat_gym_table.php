@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('alat_gym', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('merek');
+            $table->string('merek')->nullable();
+            $table->string('gambar')->nullable();
             $table->enum('kondisi', ['baik', 'rusak_ringan', 'rusak_berat'])->default('baik');
             $table->date('waktu_pembelian');
             $table->text('keterangan')->nullable();

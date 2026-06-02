@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AnggotaRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class AnggotaRequest extends FormRequest
     {
         $rules = [
             'nama' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:15',
+            'no_telp' => ['required','string','max:15', Rule::unique('anggota', 'no_telp')  ->ignore($this->route('anggota')),  ],
+            'no_telp.regex' =>'Nomor telepon harus diawali 08 dan hanya angka.',
             'alamat' => 'nullable|string|max:500',
             'tanggal_daftar' => 'nullable|date',
             'jenis_kelamin' => 'required|in:laki_laki,perempuan',

@@ -19,7 +19,15 @@
         <div class="card h-100">
             <div class="card-body text-center py-4">
                 <div class="stat-icon primary mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                    <i class="bi bi-bicycle"></i>
+                    @if($alatGym->gambar)
+                    <img src="{{ asset('storage/' . $alatGym->gambar) }}"
+                        class="img-fluid rounded shadow-sm"
+                        style="max-height:250px;">
+                    @else
+                    <img src="{{ asset('images/default-gym.png') }}"
+                        class="img-fluid rounded shadow-sm"
+                        style="max-height:250px;">
+                    @endif
                 </div>
                 <h4 class="mb-1">{{ $alatGym->nama }}</h4>
                 <p class="text-muted mb-2">{{ $alatGym->merek ?? 'Tanpa Merek' }}</p>
