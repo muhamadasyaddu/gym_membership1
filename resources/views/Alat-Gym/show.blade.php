@@ -3,32 +3,41 @@
 @section('title', 'Detail Alat Gym')
 
 @section('content')
-<div class="page-header">
-    <div class="d-flex align-items-center mb-2">
-        <a href="{{ route('alat-gym.index') }}" class="btn btn-light btn-sm me-2">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-        <h1 class="page-title mb-0">Detail Alat Gym</h1>
+    <div class="page-header">
+        <div class="d-flex align-items-center mb-2">
+            <a href="{{ route('alat-gym.index') }}" class="btn btn-light btn-sm me-2">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <h1 class="page-title mb-0">Detail Alat Gym</h1>
+        </div>
+        <p class="page-subtitle">Informasi lengkap alat</p>
     </div>
-    <p class="page-subtitle">Informasi lengkap alat</p>
-</div>
 
-<div class="row g-4">
-    <!-- Equipment Info Card -->
-    <div class="col-lg-4">
-        <div class="card h-100">
-            <div class="card-body text-center py-4">
-                <div class="stat-icon primary mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                    @if($alatGym->gambar)
-                    <img src="{{ asset('storage/' . $alatGym->gambar) }}"
-                        class="img-fluid rounded shadow-sm"
-                        style="max-height:250px;">
-                    @else
-                    <img src="{{ asset('images/default-gym.png') }}"
-                        class="img-fluid rounded shadow-sm"
-                        style="max-height:250px;">
-                    @endif
-                </div>
+    <div class="row g-4">
+        <!-- Equipment Info Card -->
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body text-center py-4">
+                    <div class="equipment-preview mb-4">
+
+        @if($alatGym->gambar)
+
+            <img
+                src="{{ asset('storage/'.$alatGym->gambar) }}"
+                alt="{{ $alatGym->nama }}"
+                class="equipment-detail-image">
+
+        @else
+
+            <div class="equipment-detail-placeholder">
+
+                <i class="bi bi-image"></i>
+
+            </div>
+
+        @endif
+
+    </div>
                 <h4 class="mb-1">{{ $alatGym->nama }}</h4>
                 <p class="text-muted mb-2">{{ $alatGym->merek ?? 'Tanpa Merek' }}</p>
                 <span class="badge bg-{{ $alatGym->kondisi_badge }} mb-3">
@@ -83,4 +92,77 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+
+<style>
+
+        .equipment-preview{
+
+            display:flex;
+            justify-content:center;
+
+        }
+
+        .equipment-detail-image{
+
+            width:100%;
+
+            max-width:240px;
+
+            height:220px;
+
+            object-fit:contain;
+
+            background:#ffffff;
+
+            padding:16px;
+
+            border:1px solid #e5e7eb;
+
+            border-radius:20px;
+
+            box-shadow:
+                0 8px 24px rgba(15,23,42,.06);
+
+            transition:all .3s ease;
+
+        }
+
+        .equipment-detail-image:hover{
+
+            transform:translateY(-4px);
+
+            box-shadow:
+                0 14px 30px rgba(15,23,42,.10);
+
+        }
+
+        .equipment-detail-placeholder{
+
+            width:240px;
+
+            height:220px;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            background:#f8fafc;
+
+            border:1px solid #e5e7eb;
+
+            border-radius:20px;
+
+            color:#94a3b8;
+
+            font-size:48px;
+
+        }
+
+        </style>
+
+@endpush
 @endsection

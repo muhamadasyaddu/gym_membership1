@@ -70,6 +70,41 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            <div class="mb-3">
+                <label for="gambar" class="form-label">
+                    Gambar Alat
+                </label>
+
+                <input
+                    type="file"
+                    class="form-control @error('gambar') is-invalid @enderror"
+                    id="gambar"
+                    name="gambar"
+                    accept=".jpg,.jpeg,.png,.webp">
+                    <div class="mt-3 d-none" id="preview-container">
+
+                <img
+                    id="preview-image"
+                    class="img-thumbnail"
+                    style="
+                        width:180px;
+                        height:140px;
+                        object-fit:contain;
+                        padding:12px;
+                        border-radius:16px;
+                        background:#ffffff;
+                        border:1px solid #e5e7eb;
+                    ">
+
+            </div>
+
+                @error('gambar')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
             
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">
@@ -80,4 +115,37 @@
         </form>
     </div>
 </div>
+
+
+</div>
 @endsection
+
+@push('scripts')
+
+<script>
+
+document.getElementById('gambar')?.addEventListener('change', function(e){
+
+    const file = e.target.files[0];
+
+    if(file){
+
+        const reader = new FileReader();
+
+        reader.onload = function(event){
+
+            document.getElementById('preview-image').src = event.target.result;
+
+            document.getElementById('preview-container').classList.remove('d-none');
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+});
+
+</script>
+
+@endpush

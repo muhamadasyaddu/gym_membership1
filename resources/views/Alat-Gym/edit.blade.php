@@ -15,7 +15,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form method="POST" action="{{ route('alat-gym.update', $alatGym) }}">
+        <form method="POST"action="{{ route('alat-gym.update',$alatGym) }}" enctype="multipart/form-data">
             @csrf @method('PUT')
             
             <div class="row">
@@ -70,6 +70,45 @@
                 @error('keterangan')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Gambar Alat
+                </label>
+
+                @if($alatGym->gambar)
+                    <div class="mb-2">
+                        <img
+                            src="{{ asset('storage/'.$alatGym->gambar) }}"
+                            class="img-thumbnail"
+                            style="
+                            width:180px;
+                            height:140px;
+
+                            object-fit:contain;
+
+                            padding:12px;
+
+                            background:#ffffff;
+
+                            border:1px solid #e5e7eb;
+
+                            border-radius:16px;
+
+                            box-shadow:0 4px 12px rgba(0,0,0,.05);
+                            ">
+                    </div>
+                @endif
+
+                <input
+                    type="file"
+                    
+                    name="gambar"
+                    class="form-control"
+                    accept=".jpg,.jpeg,.png,.webp">
+
             </div>
             
             <div class="d-flex gap-2">
