@@ -600,6 +600,7 @@
                 </li>
             </ul>
             
+            @if(auth()->user()->isAdmin())
             <div class="sidebar-divider"></div>
             <div class="sidebar-label">Pengaturan</div>
             <ul class="nav flex-column">
@@ -615,15 +616,14 @@
                         <span>Alat Gym</span>
                     </a>
                 </li>
-                @if(auth()->user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}" href="{{ route('user.index') }}">
                         <i class="bi bi-person-badge-fill"></i>
                         <span>User Management</span>
                     </a>
                 </li>
-                @endif
             </ul>
+            @endif
         </div>
     </nav>
     

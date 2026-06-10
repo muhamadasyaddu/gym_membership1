@@ -46,7 +46,7 @@ Route::resource('anggota', AnggotaController::class)
     ]);
     
     // Paket Gym
-    Route::resource('paket-gym', PaketGymController::class);
+    Route::resource('paket-gym', PaketGymController::class)->middleware('role:admin');
     
     // Transaksi
     Route::resource('transaksi', TransaksiController::class);
@@ -58,7 +58,7 @@ Route::resource('anggota', AnggotaController::class)
         ->name('presensi.quick');
     
     // Alat Gym
-    Route::resource('alat-gym', AlatGymController::class);
+    Route::resource('alat-gym', AlatGymController::class)->middleware('role:admin');
     
     // User Management (Admin only)
     Route::resource('user', UserController::class)->middleware('role:admin');
