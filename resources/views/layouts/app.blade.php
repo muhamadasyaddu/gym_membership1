@@ -13,6 +13,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root{
@@ -576,7 +579,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                        <i class="bi bi-grid-1x2-fill"></i>
+                        <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -588,13 +591,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('transaksi.*') ? 'active' : '' }}" href="{{ route('transaksi.index') }}">
-                        <i class="bi bi-receipt"></i>
+                        <i class="bi bi-cash-stack"></i>
                         <span>Transaksi</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('presensi.*') ? 'active' : '' }}" href="{{ route('presensi.index') }}">
-                        <i class="bi bi-calendar-check-fill"></i>
+                        <i class="bi bi-calendar-check"></i>
                         <span>Presensi</span>
                     </a>
                 </li>
@@ -602,20 +605,24 @@
             
             @if(auth()->user()->isAdmin())
             <div class="sidebar-divider"></div>
-            <div class="sidebar-label">Pengaturan</div>
+            <div class="sidebar-label">Master Data</div>
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('paket-gym.*') ? 'active' : '' }}" href="{{ route('paket-gym.index') }}">
-                        <i class="bi bi-box-fill"></i>
+                        <i class="bi bi-card-checklist"></i>
                         <span>Paket Gym</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('alat-gym.*') ? 'active' : '' }}" href="{{ route('alat-gym.index') }}">
-                        <i class="bi bi-bicycle"></i>
+                        <i class="fa-solid fa-dumbbell"></i>
                         <span>Alat Gym</span>
                     </a>
                 </li>
+
+                <div class="sidebar-menu">
+            <div class="sidebar-label">Menu Utama</div>
+            <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}" href="{{ route('user.index') }}">
                         <i class="bi bi-person-badge-fill"></i>
