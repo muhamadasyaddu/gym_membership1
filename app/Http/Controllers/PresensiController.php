@@ -39,15 +39,23 @@ class PresensiController extends Controller
     /**
      * Show the form for creating a new resource (QR Scanner).
      */
-    public function create()
+    public function create(Request $request)
     {
-        // View create will be used for the manual fallback if needed, but primarily we scan at index or a dedicated scan page.
-        // Let's pass active transactions for manual fallback
-        $transaksis = Transaksi::with('anggota')->where('status', 'lunas')
-            ->whereDate('waktu_berakhir', '>=', today())
-            ->get();
+        $selectedAnggota = $request->anggota;
 
-        return view('presensi.create', compact('transaksis'));
+        $transaksis = Transaksi::with([
+            'anggota',
+            'paket'
+        ])
+        ->where('status', 'lunas')
+        ->whereDate('waktu_berakhir', '>=', now())
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('presensi.create', compact(
+            'transaksis',
+            'selectedAnggota'
+        ));
     }
 
     /**

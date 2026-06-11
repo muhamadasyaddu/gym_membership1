@@ -621,7 +621,7 @@
                 </li>
 
                 <div class="sidebar-menu">
-            <div class="sidebar-label">Menu Utama</div>
+            <div class="sidebar-label">Administrasi</div>
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}" href="{{ route('user.index') }}">

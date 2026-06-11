@@ -3,38 +3,59 @@
 @section('title', 'Tambah Presensi')
 
 @section('content')
-<div class="page-header">
-    <div class="d-flex align-items-center mb-2">
-        <a href="{{ route('presensi.index') }}" class="btn btn-light btn-sm me-2">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-        <h1 class="page-title mb-0">Tambah Presensi</h1>
+    <div class="page-header">
+        <div class="d-flex align-items-center mb-2">
+            <a href="{{ route('presensi.index') }}" class="btn btn-light btn-sm me-2">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <h1 class="page-title mb-0">Tambah Presensi</h1>
+        </div>
+        <p class="page-subtitle">Catat kehadiran anggota</p>
     </div>
-    <p class="page-subtitle">Catat kehadiran anggota</p>
-</div>
 
-<div class="card">
-    <div class="card-body">
-        <form method="POST" action="{{ route('presensi.store') }}">
-            @csrf
-            
-            <div class="row">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{{ route('presensi.store') }}">
+                @csrf
+                
                 <div class="col-md-6 mb-3">
-                    <label for="anggota_id" class="form-label">Anggota <span class="text-danger">*</span></label>
-                    <select class="form-select @error('anggota_id') is-invalid @enderror" 
-                            id="anggota_id" name="anggota_id" required>
-                        <option value="">Pilih anggota</option>
-                        @foreach($anggota as $a)
-                        <option value="{{ $a->id }}" {{ old('anggota_id', request('anggota')) == $a->id ? 'selected' : '' }}>
-                            {{ $a->nama }} ({{ $a->status_label }})
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('anggota_id')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <small class="text-muted">Hanya anggota aktif yang ditampilkan</small>
-                </div>
+        <label for="transaksi_id" class="form-label">
+            Paket Aktif Anggota
+            <span class="text-danger">*</span>
+        </label>
+
+        <select
+            class="form-select @error('transaksi_id') is-invalid @enderror"
+            id="transaksi_id"
+            name="transaksi_id"
+            required>
+
+            <option value="">Pilih anggota</option>
+
+            @foreach($transaksis as $transaksi)
+                <option
+                    value="{{ $transaksi->id }}"
+                    {{ old('transaksi_id') == $transaksi->id ? 'selected' : '' }}>
+
+                    {{ $transaksi->anggota->nama }}
+                    -
+                    {{ $transaksi->paketGym->nama_paket ?? 'Paket Aktif' }}
+
+                </option>
+            @endforeach
+
+        </select>
+
+        @error('transaksi_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+
+        <small class="text-muted">
+            Hanya membership aktif yang ditampilkan
+        </small>
+    </div>
                 
                 <div class="col-md-6 mb-3">
                     <label for="waktu_masuk" class="form-label">Waktu Masuk</label>

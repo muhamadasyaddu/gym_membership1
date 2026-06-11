@@ -17,11 +17,13 @@ class AlatGym extends Model
         'gambar',
         'kondisi',
         'waktu_pembelian',
+        'terakhir_diperiksa',
         'keterangan',
     ];
 
     protected $casts = [
         'waktu_pembelian' => 'date',
+        'terakhir_diperiksa' => 'date',
     ];
 
     /**

@@ -62,6 +62,25 @@
                     @enderror
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Terakhir Diperiksa
+                </label>
+
+                <input
+                    type="date"
+                    name="terakhir_diperiksa"
+                    class="form-control @error('terakhir_diperiksa') is-invalid @enderror"
+                    value="{{ old('terakhir_diperiksa', optional($alatGym->terakhir_diperiksa)->format('Y-m-d')) }}"
+                    max="{{ date('Y-m-d') }}">
+
+                @error('terakhir_diperiksa')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
             
             <div class="mb-3">
                 <label for="keterangan" class="form-label">Keterangan</label>
